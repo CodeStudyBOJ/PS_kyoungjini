@@ -1,0 +1,25 @@
+name: Sync new commits from personal PS repo
+
+on:
+  schedule:
+    - cron: '0 15 * * 5'   # 매주 토요일 00:00 KST
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout org repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull commits from personal repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/kyoungjini/PS.git
+          git fetch upstream main
+          git merge upstream/main --no-edit
+          git push origin main
