@@ -5,6 +5,9 @@ on:
     - cron: '0 15 * * 5'   # 매주 토요일 00:00 KST
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
